@@ -1,0 +1,31 @@
+* {
+  background-color: yellow;
+}
+
+input {
+  background-color: white;
+  border-radius: 5px;
+  padding: .3em;
+}
+
+button {
+  background-color: red;
+}
+
+li, h2 {
+  font-size: 1.5em;
+}
+
+#submitButton {
+  background-color: lightgray;
+  padding: .5em;
+}
+
+.readyButton {
+  min-width: 100%;
+  padding: 2em 0;
+}
+
+#finalButton {
+  padding: 1.2em;
+}
