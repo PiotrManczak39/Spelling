@@ -1,35 +1,11 @@
 const user = prompt('What is your name? Type in the box your name, please.');
 const readyButton = document.querySelector('#submitButton');
 const header = document.querySelector('.header');
-const main = document.querySelector('main');
+const main = document.getElementById('main');
+const mainContent = document.querySelector('.main');
 const results = document.querySelector('.results');
-main.style.display = 'none';
-results.style.display = 'none';
-let spellingArray = [];
-let answersArray = [];
-
-function createList(arr, user) {
-  let html = `<ul><h2>Dear ${user}. Wrong ${arr.length} answers are:</h2>`;
-  arr.forEach(item => {
-    html += `<li>${item}</li>`;
-  });
-  html += '</ul>';
-  return html;
-}
-
-function lastCheck() {
-  let correctAnswers = [];
-  let wrongAnswers = [];
-  for (let i = 0; i<spellingArray.length; i++) {
-    if (spellingArray[i].toLowerCase() == answersArray[i].toLowerCase()) {
-      correctAnswers.push(answersArray[i].toLowerCase());
-    } else {
-      wrongAnswers.push(answersArray[i].toLowerCase());
-    }
-  }
-  console.log('Correct Answers are: ' + correctAnswers + ' and wrong answers are: ' + wrongAnswers);
-  return createList(wrongAnswers, user);
-}
+const finalButton = document.getElementById('finalButton');
+const playAgain = document.getElementById('playAgain')
 
 const button1 = document.getElementById('button1');
 const input1 = document.getElementById('input1');
@@ -51,6 +27,17 @@ const button9 = document.getElementById('button9');
 const input9 = document.getElementById('input9');
 const button10 = document.getElementById('button10');
 const input10 = document.getElementById('input10');
+main.style.display = 'none';
+results.style.display = 'none';
+let spellingArray = [];
+let answersArray = [];
+
+function resetGame() {
+  results.style.display = 'none';
+  answersArray = [];
+  document.querySelectorAll('.main div input').forEach(item => item.value = '');
+  main.style.display = 'block';
+}
 
 function createMainContent(num) {
   let div = document.createElement('div');
@@ -60,115 +47,50 @@ function createMainContent(num) {
   div.appendChild(p);
   let input = document.createElement('input');
   div.appendChild(input);
-  let answerButton = document.createElement('button');
-  answerButton.textContent = "I'm done. Move on!";
-  answerButton.className = `answerButton${num}`;
-  answerButton.addEventListener('click', (e) => {
-    if (input.value !== '') {
-      event.target.style.backgroundColor = 'green';
-      answersArray.push(input.value);
-    } else  {
-      alert('Dont forget to fill in the box and confirm!');
-    }
-  });
-  div.appendChild(answerButton);
 }
 
-function createFinalCheckButton() {
-  let div = document.createElement('div');
-  main.appendChild(div);
-  let p = document.createElement('h3');
-  p.textContent = 'If you have finished giving your answer press button below to find find out how you did! Soooo exciting!';
-  div.appendChild(p);
-  let finalButton = document.createElement('button');
-  finalButton.textContent = 'FINISH';
-  finalButton.className = 'finalButton';
-  finalButton.id = 'finalButton';
-  div.appendChild(finalButton);
-  finalButton.addEventListener('click', () => {
-    if (answersArray.length === 10) {
-      results.style.display = 'block';
-      main.style.display = 'none';
-      console.log(answersArray);
-      results.innerHTML = lastCheck();
+function lastCheck(user) {
+  let correctAnswers = [];
+  let wrongAnswers = [];
+  for (let i = 0; i<spellingArray.length; i++) {
+    if (spellingArray[i].toLowerCase() == answersArray[i].toLowerCase()) {
+      correctAnswers.push(answersArray[i].toLowerCase());
     } else {
-      alert('Confirm all the answers, please!');
+      wrongAnswers.push(answersArray[i].toLowerCase());
     }
-  });
+  }
+  if (wrongAnswers.length > 0) {
+    let html = `<ul><h2>Dear ${user}. You had ${wrongAnswers.length} wrong answers. They are:</h2>`;
+    wrongAnswers.forEach(item => {
+      html += `<li>${item}</li>`;
+    });
+    html += '</ul>';
+    html += '<button id="playAgain" onclick="resetGame()">Play Again!</button>';
+    return html;
+  } else {
+    return `<h2>Everything correct. ${user}, you are a spelling Hero!</h2>`;
+  }
 }
 
-button1.addEventListener('click', () => {
-  if (input1.value !== '') {
-    button1.style.backgroundColor = 'green';
-    spellingArray.push(input1.value);
+function addEvent(input, button) {
+  if (input.value !== '') {
+    button.style.backgroundColor = 'green';
+    spellingArray.push(input.value);
   } else {
     alert('Dont forget to fill in the box and confirm!');
   }
-});
-button2.addEventListener('click', () => {
-  if (input2.value !== '') {
-    button2.style.backgroundColor = 'green';
-    spellingArray.push(input2.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button3.addEventListener('click', () => {
-  if (input3.value !== '') {
-    button3.style.backgroundColor = 'green';
-    spellingArray.push(input3.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button4.addEventListener('click', () => {
-  if (input4.value !== '') {
-    button4.style.backgroundColor = 'green';
-    spellingArray.push(input4.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button5.addEventListener('click', () => {
-  if (input5.value !== '') {
-    button5.style.backgroundColor = 'green';
-    spellingArray.push(input5.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button6.addEventListener('click', () => {
-  button6.style.backgroundColor = 'green';
-  spellingArray.push(input6.value);
-});
-button7.addEventListener('click', () => {
-  button7.style.backgroundColor = 'green';
-  spellingArray.push(input7.value);
-});
-button8.addEventListener('click', () => {
-  if (input8.value !== '') {
-    button8.style.backgroundColor = 'green';
-    spellingArray.push(input8.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button9.addEventListener('click', () => {
-  if (input9.value !== '') {
-    button9.style.backgroundColor = 'green';
-    spellingArray.push(input9.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
-button10.addEventListener('click', () => {
-  if (input10.value !== '') {
-    button10.style.backgroundColor = 'green';
-    spellingArray.push(input10.value);
-  } else {
-    alert('Dont forget to fill in the box and confirm!');
-  }
-});
+}
+
+button1.addEventListener('click', () => addEvent(input1, button1));
+button2.addEventListener('click', () => addEvent(input2, button2));
+button3.addEventListener('click', () => addEvent(input3, button3));
+button4.addEventListener('click', () => addEvent(input4, button4));
+button5.addEventListener('click', () => addEvent(input5, button5));
+button6.addEventListener('click', () => addEvent(input6, button6));
+button7.addEventListener('click', () => addEvent(input7, button7));
+button8.addEventListener('click', () => addEvent(input8, button8));
+button9.addEventListener('click', () => addEvent(input9, button9));
+button10.addEventListener('click', () => addEvent(input10, button10));
 
 readyButton.addEventListener('click', () => {
   if (spellingArray.length === 10) {
@@ -178,8 +100,16 @@ readyButton.addEventListener('click', () => {
     for (let i = 1; i<=spellingArray.length; i++) {
       createMainContent(`${i}.`);
     }
-    createFinalCheckButton();
   } else {
-    alert('Please fill in all 10 words and confirm!');
+    alert('Please fill in all 10 words.');
   }
+});
+
+finalButton.addEventListener('click', () => {
+  let allAnswers = main.querySelectorAll('input');
+  allAnswers.forEach(item => answersArray.push(item.value));
+  console.log(answersArray);
+  results.style.display = 'block';
+  main.style.display = 'none';
+  results.innerHTML = lastCheck(user);
 });
